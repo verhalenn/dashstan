@@ -8,10 +8,7 @@ def main():
     schools_dat = {'J': 8,
                    'y': [28, 8, -3, 7, -1, 1, 18, 12],
                    'sigma': [15, 10, 16, 11, 9, 11, 10, 18]}
-    if DATA_FILE_NAME in os.listdir():
-        sm = pickle.load(open(DATA_FILE_NAME, 'rb'))['model']
-    else:
-        sm = StanModel(file='model.stan')
+    sm = StanModel(file='model.stan')
     fit = sm.sampling(data=schools_dat, iter=1000, chains=4, seed=555)
     with open(DATA_FILE_NAME, 'wb') as f:
         pickle.dump({'model': sm, 'fit': fit}, f)
