@@ -8,29 +8,22 @@ from .diagnostics import Diagnostics
 
 
 class DashStan(dash.Dash):
-
     def __init__(self, data=None, **kwargs):
         super().__init__(**kwargs)
-        self.data = data
+        self.data = self._convert_data(data=data)
         self.app = dash.Dash(__name__)
         self.app.config.suppress_callback_exceptions = True
         # TODO Create an object that is a child of tab with a callable page.
         self._TABS = {
-            'diagnostics': {
-                'label': 'Diagnostics',
-                'page': Diagnostics(app=self.app),
-            },
-            'test': {
-                'label': 'Test',
-                'page': None,
-            },
+            'Diagnsotics': Diagnostics(app=self.app, data=self.data),
+            'Test': None,
         }
 
     def build_layout(self):
         self.app.layout = html.Div([
             html.H1('Dash-Stan'),
-            dcc.Tabs(id='main_tabs', value='diagnostics', children=[
-                dcc.Tab(label=self._TABS[key]['label'], value=key) for key in self._TABS
+            dcc.Tabs(id='main_tabs', value='Diagnostics', children=[
+                dcc.Tab(label=key, value=key) for key in self._TABS
             ]),
             html.Div(id='dash-holder'),
         ])
@@ -39,20 +32,23 @@ class DashStan(dash.Dash):
         @self.app.callback(Output('dash-holder', 'children'),
                            [Input('main_tabs', 'value')])
         def render_tab(value):
-            return self._TABS[value]['page']
+            return self._TABS[value]
 
     def run(self):
         self.build_layout()
         self.build_callbacks()
         self.app.run_server()
 
+    def _convert_data(self, data):
+        return data.to_dataframe(inc_warmup=True)
+
 
 class DashStanExample(DashStan):
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        # location = os.path.abspath(os.path.join('sampledata', 'sampledata.pkl'))
         dir = os.path.dirname(os.path.abspath(__file__))
         file_path = os.path.join(dir, 'sampledata', 'sampledata.pkl')
+        print(file_path)
         with open(file_path, 'rb') as f:
-            self.data = pickle.load(f)['fit']
+            self.pickle_data = pickle.load(f)
+        super().__init__(data=self.pickle_data['fit'], **kwargs)
         self.run()
