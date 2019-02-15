@@ -15,13 +15,13 @@ class DashStan(dash.Dash):
         self.app.config.suppress_callback_exceptions = True
         # TODO Create an object that is a child of tab with a callable page.
         self._TABS = {
-            'Diagnsotics': Diagnostics(app=self.app, data=self.data),
+            'Diagnostics': Diagnostics(app=self.app, data=self.data),
             'Test': None,
         }
 
     def build_layout(self):
         self.app.layout = html.Div([
-            html.H1('Dash-Stan'),
+            html.H1('DashStan'),
             dcc.Tabs(id='main_tabs', value='Diagnostics', children=[
                 dcc.Tab(label=key, value=key) for key in self._TABS
             ]),
