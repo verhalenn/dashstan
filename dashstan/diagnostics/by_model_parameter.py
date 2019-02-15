@@ -18,12 +18,15 @@ class ByModelParameter(html.Div):
     def build_children(self):
         not_parameters = ['chain', 'draw', 'warmup', 'accept_stat__', 'stepsize__',
                           'treedepth__', 'n_leapfrog__', 'divergent__', 'energy__']
+        parameters = [column for column in self.data.columns if column not in not_parameters]
         self.children = [
             # TODO include warmup checkbox
+            # TODO include divergent checkbox
             dcc.Dropdown(
                 id='parameter-input',
+                value = parameters[0],
                 options=[
-                    {'label': x, 'value': x} for x in self.data.columns if x not in not_parameters
+                    {'label': parameter, 'value': parameter} for parameter in parameters
                 ]
             ),
             dcc.Graph(id='chain-graph'),
