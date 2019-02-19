@@ -3,6 +3,7 @@ from dash.dependencies import Input, Output
 import dash_core_components as dcc
 import dash_html_components as html
 from .by_model_parameter import ByModelParameter
+from .sample_information import SampleInformation
 
 
 class Diagnostics(html.Div):
@@ -15,6 +16,10 @@ class Diagnostics(html.Div):
             'by_model_parameter': {
                 'label': 'By Model Parameter',
                 'page': ByModelParameter(app=self.app, data=self.data)
+            },
+            'samlpe_information': {
+                'label': 'Sample Information',
+                'page': SampleInformation(app=self.app, data=self.data)
             },
         }
         self.build_children()
