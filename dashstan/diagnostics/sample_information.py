@@ -40,10 +40,13 @@ class SampleInformation(html.Div):
                               'mode': 'lines',
                               'name': 'Chain: {}'.format(chain['chain'].iloc[0]),
                               }) for chain in chains]
-
+        layout = go.Layout(
+            title='Mean Metrop. Acceptance'
+        )
         return dcc.Graph(id='iter_metro_graph',
                          figure={
                              'data': traces,
+                             'layout': layout,
                          })
 
     def _build_lp_trace(self, chains):
@@ -52,22 +55,34 @@ class SampleInformation(html.Div):
                               'mode': 'lines',
                               'name': 'Chain: {}'.format(chain['chain'].iloc[0]),
                               }) for chain in chains]
+        layout = go.Layout(
+            title='Log Posterior'
+        )
 
         return dcc.Graph(id='iter_lp_graph',
                          figure={
                              'data': traces,
+                             'layout': layout,
                          })
 
     def _build_lp_hist(self):
+        layout = go.Layout(
+            title='Log Posterior'
+        )
         return dcc.Graph(id='lp_hist',
                          figure={
                              'data': [go.Histogram(x=self.data_warmup['lp__'])],
+                             'layout': layout,
                          })
 
     def _build_metro_hist(self):
+        layout = go.Layout(
+            title='Mean Metrop. Acceptance'
+        )
         return dcc.Graph(id='metro_hist',
                          figure={
-                             'data': [go.Histogram(x=self.data_warmup['accept_stat__'])]
+                             'data': [go.Histogram(x=self.data_warmup['accept_stat__'])],
+                             'layout': layout
                          })
 
     def _build_metro_lp_plot(self):
@@ -75,7 +90,16 @@ class SampleInformation(html.Div):
                               'y': self.data_warmup['lp__'],
                               'mode': 'markers',
                               })]
+        layout = go.Layout(
+            xaxis={
+                'title': 'Mean Metrop. Acceptance',
+            },
+            yaxis={
+                'title': 'Log Posterior',
+            },
+        )
         return dcc.Graph(id='metro_lp_plot',
                          figure={
                              'data': traces,
+                             'layout': layout,
                          })

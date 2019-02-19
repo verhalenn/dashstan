@@ -23,7 +23,7 @@ class ByModelParameter(html.Div):
             # TODO include divergent checkbox
             dcc.Dropdown(
                 id='parameter-input',
-                value = parameters[0],
+                value=parameters[0],
                 options=[
                     {'label': parameter, 'value': parameter} for parameter in parameters
                 ]
@@ -46,8 +46,12 @@ class ByModelParameter(html.Div):
                                   'mode': 'lines',
                                   'name': 'Chain: {}'.format(chain['chain'].iloc[0]),
                                   }) for chain in chains]
+            layout = go.Layout(
+                title='Parameter:' + value,
+            )
             return {
                 'data': traces,
+                'layout': layout,
             }
 
         @self.app.callback(
@@ -57,8 +61,12 @@ class ByModelParameter(html.Div):
         def render_dist_plot(value):
             dist_data = [self.data[self.data['warmup'] == 0][value]]
             labels = [value]
+            layout = go.Layout(
+                title=value,
+            )
             return {
                 'data': ff.create_distplot(dist_data, labels),
+                'layout': layout
             }
 
         @self.app.callback(
@@ -68,9 +76,18 @@ class ByModelParameter(html.Div):
         def render_lp_plot(value):
             lp_data = self.data[self.data['warmup'] == 0]
             traces = [go.Scatter(
-                        x=lp_data[value],
-                        y=lp_data['lp__'],
-                        mode='markers')]
+                x=lp_data[value],
+                y=lp_data['lp__'],
+                mode='markers')]
+            layout = go.Layout(
+                xaxis={
+                    'title': value,
+                },
+                yaxis={
+                    'title': 'Log Posterior'
+                },
+            )
             return {
-                'data': traces
+                'data': traces,
+                'layout': layout,
             }
