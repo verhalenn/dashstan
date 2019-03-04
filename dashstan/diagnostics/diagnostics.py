@@ -4,6 +4,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 from .by_model_parameter import ByModelParameter
 from .sample_information import SampleInformation
+from .divergence_information import DivergenceInformation
 
 
 class Diagnostics(html.Div):
@@ -17,9 +18,13 @@ class Diagnostics(html.Div):
                 'label': 'By Model Parameter',
                 'page': ByModelParameter(app=self.app, data=self.data)
             },
-            'samlpe_information': {
+            'sample_information': {
                 'label': 'Sample Information',
                 'page': SampleInformation(app=self.app, data=self.data)
+            },
+            'divergence_information': {
+                'label': 'Divergence Information',
+                'page': DivergenceInformation(app=self.app, data=self.data)
             },
         }
         self.build_children()
