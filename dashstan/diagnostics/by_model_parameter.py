@@ -85,6 +85,7 @@ class ByModelParameter(html.Div):
                 'layout': layout
             }
 
+        # TODO change hover to nearest if possible.
         @self.app.callback(
             Output(component_id='parameter-lp-plot', component_property='figure'),
             [Input(component_id='parameter-input', component_property='value')]

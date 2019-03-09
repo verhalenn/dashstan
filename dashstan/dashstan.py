@@ -63,7 +63,6 @@ class DashStanExample(DashStan):
     def __init__(self, **kwargs):
         dir = os.path.dirname(os.path.abspath(__file__))
         file_path = os.path.join(dir, 'sampledata', 'sampledata.pkl')
-        print(file_path)
         with open(file_path, 'rb') as f:
             self.pickle_data = pickle.load(f)
         super().__init__(data=self.pickle_data['fit'], **kwargs)
