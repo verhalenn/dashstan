@@ -14,10 +14,11 @@
 #      You should have received a copy of the GNU General Public License
 #      along with this program.  If not, see <https://www.gnu.org/licenses/>
 
-import dash
 from dash.dependencies import Input, Output
 import dash_core_components as dcc
 import dash_html_components as html
+
+from .treedepth_information import TreeDepth
 from .by_model_parameter import ByModelParameter
 from .sample_information import SampleInformation
 from .divergence_information import DivergenceInformation
@@ -42,6 +43,10 @@ class Diagnostics(html.Div):
                 'label': 'Divergence Information',
                 'page': DivergenceInformation(app=self.app, data=self.data)
             },
+            'treedepth_information': {
+                'label': 'Treedepth Information',
+                'page': TreeDepth(app=self.app, data=self.data)
+            }
         }
         self.build_children()
         self.build_callbacks()
