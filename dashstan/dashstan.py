@@ -21,6 +21,7 @@ from dash.dependencies import Input, Output
 import dash_core_components as dcc
 import dash_html_components as html
 from .diagnostics import Diagnostics
+from .estimate import Estimate
 
 
 class DashStan(dash.Dash):
@@ -32,7 +33,7 @@ class DashStan(dash.Dash):
         # TODO Create an object that is a child of tab with a callable page.
         self._TABS = {
             'Diagnostics': Diagnostics(app=self.app, data=self.data),
-            'Test': None,
+            'Estimate': Estimate(app=self.app, data=self.data),
         }
 
     def build_layout(self):
