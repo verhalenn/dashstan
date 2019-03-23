@@ -66,9 +66,20 @@ class DivergenceInformation(html.Div):
             for divergent in self.data_warmup['divergent__'].unique()
         ]
 
+        layout = go.Layout(
+            xaxis={
+                'title': 'Divergent'
+            },
+            yaxis={
+                'title': 'Log Probability'
+            },
+            showlegend=False,
+        )
+
         return dcc.Graph(id='divergent_log_violin',
                          figure={
                              'data': traces,
+                             'layout': layout,
                          })
 
     def _build_divergent_metro_violin(self):
@@ -79,9 +90,19 @@ class DivergenceInformation(html.Div):
             for divergent in self.data_warmup['divergent__'].unique()
         ]
 
+        layout = go.Layout(
+            xaxis={
+                'title': 'Divergent'
+            },
+            yaxis={
+                'title': 'Mean Metrop. Acceptance'
+            },
+            showlegend=False,
+        )
         return dcc.Graph(id='divergent_metro_violin',
                          figure={
                              'data': traces,
+                             'layout': layout,
                          })
 
 
