@@ -27,13 +27,14 @@ from .estimate import Estimate
 class DashStan(dash.Dash):
     def __init__(self, data=None, **kwargs):
         super().__init__(**kwargs)
-        self.data = self._convert_data(data=data)
+        self.raw_data = data
+        self.data = self._convert_data(data=self.raw_data)
         self.app = dash.Dash(__name__)
         self.app.config.suppress_callback_exceptions = True
         # TODO Create an object that is a child of tab with a callable page.
         self._TABS = {
             'Diagnostics': Diagnostics(app=self.app, data=self.data),
-            'Estimate': Estimate(app=self.app, data=self.data),
+            'Estimate': Estimate(app=self.app, raw_data=self.raw_data, data=self.data),
         }
 
     def build_layout(self):
@@ -51,20 +52,20 @@ class DashStan(dash.Dash):
         def render_tab(value):
             return self._TABS[value]
 
-    def run(self):
+    def run(self, debug=False):
         self.build_layout()
         self.build_callbacks()
-        self.app.run_server()
+        self.app.run_server(debug=debug)
 
     def _convert_data(self, data):
         return data.to_dataframe(inc_warmup=True)
 
 
 class DashStanExample(DashStan):
-    def __init__(self, **kwargs):
+    def __init__(self, debug=False, **kwargs):
         dir = os.path.dirname(os.path.abspath(__file__))
         file_path = os.path.join(dir, 'sampledata', 'sampledata.pkl')
         with open(file_path, 'rb') as f:
             self.pickle_data = pickle.load(f)
         super().__init__(data=self.pickle_data['fit'], **kwargs)
-        self.run()
+        self.run(debug=debug)
