@@ -28,6 +28,7 @@ class ParametersPlot(dashstantab.DashStanTab):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.label='Parameters-Plot'
         self.data = self.get_data_warmup()
         self._build_children()
         self._build_callbacks()
