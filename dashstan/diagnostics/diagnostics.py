@@ -22,6 +22,7 @@ from .treedepth_information import TreeDepth
 from .by_model_parameter import ByModelParameter
 from .sample_information import SampleInformation
 from .divergence_information import DivergenceInformation
+from .step_size_information import StepSizeInformation
 
 
 class Diagnostics(html.Div):
@@ -46,7 +47,11 @@ class Diagnostics(html.Div):
             'treedepth_information': {
                 'label': 'Treedepth Information',
                 'page': TreeDepth(app=self.app, data=self.data)
-            }
+            },
+            'step_size_informatio': {
+                'label': 'Step size information',
+                'page': StepSizeInformation(app=self.app, data=self.data),
+            },
         }
         self.build_children()
         self.build_callbacks()
