@@ -23,13 +23,19 @@ import dash_html_components as html
 from .diagnostics import Diagnostics
 from .estimate import Estimate
 
+EXTERNAL_STYLESHEETS = ['https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css']
 
 class DashStan(dash.Dash):
     def __init__(self, data=None, **kwargs):
+        """
+
+        :param data: Raw Stan simulation data.
+        :param kwargs:
+        """
         super().__init__(**kwargs)
         self.raw_data = data
         self.data = self._convert_data(data=self.raw_data)
-        self.app = dash.Dash(__name__)
+        self.app = dash.Dash(__name__, external_stylesheets=EXTERNAL_STYLESHEETS)
         self.app.config.suppress_callback_exceptions = True
         # TODO Create an object that is a child of tab with a callable page.
         self._TABS = {
@@ -38,7 +44,7 @@ class DashStan(dash.Dash):
         }
 
     def build_layout(self):
-        self.app.layout = html.Div([
+        self.app.layout = html.Div(className='container-fluid', children=[
             html.H1('DashStan'),
             dcc.Tabs(id='main_tabs', value='Diagnostics', children=[
                 dcc.Tab(label=key, value=key) for key in self._TABS
