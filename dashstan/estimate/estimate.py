@@ -18,6 +18,7 @@ from dash.dependencies import Input, Output
 import dash_core_components as dcc
 import dash_html_components as html
 from .parameters_plot import ParametersPlot
+from .post_summary_stats import PostSummaryStats
 
 class Estimate(html.Div):
 
@@ -27,7 +28,8 @@ class Estimate(html.Div):
         self.data = data
         self.app = app
         self._estimate_tabs = {
-            'parameters_plot': ParametersPlot(label='Parameters Plot', app=self.app, data=self.data)
+            'parameters_plot': ParametersPlot(app=self.app, data=self.data),
+            'post_summary_stats': PostSummaryStats(app=self.app, data=self.data, raw_data=self.raw_data)
         }
         self._build_children()
         self._build_callbacks()
