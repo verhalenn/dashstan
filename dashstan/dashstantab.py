@@ -19,11 +19,10 @@ import dash_html_components as html
 
 class DashStanTab(html.Div):
 
-    def __init__(self, app, data, label, **kwargs):
+    def __init__(self, app, data, **kwargs):
         super().__init__(**kwargs)
         self.app = app
         self.data = data
-        self.label = label
 
     def get_label(self):
         return self.label
@@ -38,3 +37,6 @@ class DashStanTab(html.Div):
     def get_chains(self):
         chain_data = self.data_warmup
         return [chain_data[chain_data['chain'] == chain] for chain in chain_data['chain'].unique()]
+
+    def get_data_warmup(self):
+        return self.data[self.data['warmup'] == 0]
