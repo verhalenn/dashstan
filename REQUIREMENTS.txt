@@ -1,7 +1,7 @@
 dash>=0.39
 dash_core_components>=0.44
 dash_html_components>=0.14
+dash_table>=3.6
 pystan>=1.15
 pandas>=0.24
 plotly>=3.5
-numpy>=1.15
