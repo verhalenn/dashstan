@@ -20,10 +20,18 @@ setup(
     name='dashstan',
     version='0.1.0',
     packages=find_packages(),
-    url='',
-    license='',
+    url='https://github.com/verhalenn/dashstan',
+    license='GPLv3',
     author='Nicholas Ver Halen',
-    author_email='',
+    author_email='verhalenn@gmail.com',
     description='Dashboard for Stan MCMC simulations.',
-    install_requires=['dash']
+    install_requires=[
+        "dash>=0.39",
+        "dash_core_components>=0.44",
+        "dash_html_components>=0.14",
+        "dash_table>=3.6",
+        "pystan>=1.15",
+        "pandas>=0.24",
+        "plotly>=3.5",
+    ]
 )
