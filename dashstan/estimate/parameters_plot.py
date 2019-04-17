@@ -35,8 +35,8 @@ class ParametersPlot(dashstantab.DashStanTab):
 
     def _build_children(self):
         self.children = [
-            # html.Div(childrent='Regex Search'),
-            dcc.Input(id='parameters-regex', value='', type='text'),
+            html.H4(children='Regex Search:', style={'float': 'left'}),
+            dcc.Input(id='parameters-regex', value='', type='text', style={'margin': '5px'}),
             html.Div(id='error-bar')
         ]
 
