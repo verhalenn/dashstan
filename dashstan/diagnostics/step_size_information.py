@@ -13,9 +13,7 @@
 #
 #      You should have received a copy of the GNU General Public License
 #      along with this program.  If not, see <https://www.gnu.org/licenses/>
-from dash.dependencies import Input, Output
 import dash_core_components as dcc
-import dash_html_components as html
 from dashstan import dashstantab
 import plotly.graph_objs as go
 
