@@ -25,6 +25,7 @@ from .estimate import Estimate
 
 EXTERNAL_STYLESHEETS = ['https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css']
 
+
 class DashStan(dash.Dash):
     def __init__(self, data=None, **kwargs):
         """

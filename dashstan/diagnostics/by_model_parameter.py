@@ -20,6 +20,9 @@ import dash_html_components as html
 import plotly.graph_objs as go
 import plotly.figure_factory as ff
 
+STANDARD_HEIGHT = dict(height=250)
+STANDARD_MARGIN = dict(l=50, r=20, t=20, b=50, pad=5)
+
 
 class ByModelParameter(html.Div):
 
@@ -44,9 +47,20 @@ class ByModelParameter(html.Div):
                     {'label': parameter, 'value': parameter} for parameter in parameters
                 ]
             ),
-            dcc.Graph(id='chain-graph'),
-            dcc.Graph(id='parameter-dist-plot'),
-            dcc.Graph(id='parameter-lp-plot')
+            html.Div(className='container-fluid', children=[
+                html.Div(className='row', children=[
+                    dcc.Graph(id='chain-graph', style=STANDARD_HEIGHT),
+                    dcc.Graph(id='parameter-dist-plot', style=STANDARD_HEIGHT),
+                ]),
+                html.Div(className='row', children=[
+                    dcc.Graph(id='parameter-lp-plot', style=STANDARD_HEIGHT),
+                    dcc.Graph(id='parameter-metro-plot', style=STANDARD_HEIGHT),
+                ]),
+                html.Div(className='row', children=[
+                    dcc.Graph(id='step-size-violin', style=STANDARD_HEIGHT, config=dict(displayModeBar=False)),
+                    dcc.Graph(id='treedepth-violin', style=STANDARD_HEIGHT, config=dict(displayModeBar=False)),
+                ]),
+            ]),
         ]
 
     def build_callbacks(self):
@@ -63,7 +77,8 @@ class ByModelParameter(html.Div):
                                   'name': 'Chain: {}'.format(chain['chain'].iloc[0]),
                                   }) for chain in chains]
             layout = go.Layout(
-                title='Parameter:' + value,
+                margin=STANDARD_MARGIN,
+                legend=dict(orientation='h', y=1)
             )
             return {
                 'data': traces,
@@ -77,13 +92,9 @@ class ByModelParameter(html.Div):
         def render_dist_plot(value):
             dist_data = [self.data[self.data['warmup'] == 0][value]]
             labels = [value]
-            layout = go.Layout(
-                title=value,
-            )
-            return {
-                'data': ff.create_distplot(dist_data, labels),
-                'layout': layout
-            }
+            fig = ff.create_distplot(dist_data, labels)
+            fig['layout'].update(margin=STANDARD_MARGIN)
+            return {'data': fig}
 
         # TODO change hover to nearest if possible.
         @self.app.callback(
@@ -103,6 +114,75 @@ class ByModelParameter(html.Div):
                 yaxis={
                     'title': 'Log Posterior'
                 },
+                margin=STANDARD_MARGIN,
+            )
+            return {
+                'data': traces,
+                'layout': layout,
+            }
+
+        @self.app.callback(
+            Output(component_id='parameter-metro-plot', component_property='figure'),
+            [Input(component_id='parameter-input', component_property='value')]
+        )
+        def render_metro_plot(value):
+            metro_data = self.data[self.data['warmup'] == 0]
+            traces = [go.Scatter(
+                x=metro_data[value],
+                y=metro_data['accept_stat__'],
+                mode='markers')]
+            layout = go.Layout(
+                xaxis={
+                    'title': value,
+                },
+                yaxis={
+                    'title': 'Mean Metrop. Acceptance'
+                },
+                margin=STANDARD_MARGIN,
+            )
+            return {
+                'data': traces,
+                'layout': layout,
+            }
+
+        @self.app.callback(
+            Output(component_id='step-size-violin', component_property='figure'),
+            [Input(component_id='parameter-input', component_property='value')]
+        )
+        def render_step_violin(value):
+            step_data = self.data[self.data['warmup'] == 0]
+            traces = [go.Violin(x=step_data['stepsize__'], y=step_data[value])]
+            layout = go.Layout(
+                xaxis={
+                    'title': 'Sampled Step Size',
+                    'type': 'category'
+                },
+                yaxis={
+                    'title': value,
+                },
+                margin=STANDARD_MARGIN,
+            )
+            return {
+                'data': traces,
+                'layout': layout,
+            }
+
+        @self.app.callback(
+            Output(component_id='treedepth-violin', component_property='figure'),
+            [Input(component_id='parameter-input', component_property='value')]
+        )
+        def render_step_violin(value):
+            step_data = self.data[self.data['warmup'] == 0]
+            traces = [go.Violin(x=step_data['treedepth__'], y=step_data[value])]
+            layout = go.Layout(
+                xaxis={
+                    'title': 'Treedepth',
+                    'type': 'category'
+                },
+                yaxis={
+                    'title': value,
+                },
+                margin=STANDARD_MARGIN,
             )
             return {
                 'data': traces,

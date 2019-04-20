@@ -18,6 +18,8 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
 
+STANDARD_HEIGHT = 300
+STANDARD_MARGIN = dict(l=50, r=20, t=50, b=50, pad=5)
 
 class SampleInformation(html.Div):
 
@@ -37,11 +39,21 @@ class SampleInformation(html.Div):
         metro_hist = self._build_metro_hist()
         metro_lp_plot = self._build_metro_lp_plot()
         self.children = [
-            iter_lp_graph,
-            iter_metro_graph,
-            lp_hist,
-            metro_hist,
-            metro_lp_plot,
+            html.Div(className='container-fluid', children=[
+                html.Div(className='row', children=[
+                    html.Div(className='col', children=[
+                        metro_lp_plot,
+                    ]),
+                    html.Div(className='col',  style=dict(height=300), children=[
+                        iter_lp_graph,
+                        iter_metro_graph,
+                    ]),
+                    html.Div(className='col', children=[
+                        lp_hist,
+                        metro_hist,
+                    ]),
+                ]),
+            ]),
         ]
 
     def _get_chains(self):
@@ -55,9 +67,12 @@ class SampleInformation(html.Div):
                               'name': 'Chain: {}'.format(chain['chain'].iloc[0]),
                               }) for chain in chains]
         layout = go.Layout(
-            title='Mean Metrop. Acceptance'
+            title='Mean Metrop. Acceptance',
+            legend=dict(orientation='h'),
+            margin=STANDARD_MARGIN,
         )
         return dcc.Graph(id='iter_metro_graph',
+                         style=dict(height=STANDARD_HEIGHT),
                          figure={
                              'data': traces,
                              'layout': layout,
@@ -70,10 +85,13 @@ class SampleInformation(html.Div):
                               'name': 'Chain: {}'.format(chain['chain'].iloc[0]),
                               }) for chain in chains]
         layout = go.Layout(
-            title='Log Posterior'
+            title='Log Posterior',
+            legend=dict(orientation='h'),
+            margin=STANDARD_MARGIN,
         )
 
         return dcc.Graph(id='iter_lp_graph',
+                         style=dict(height=STANDARD_HEIGHT),
                          figure={
                              'data': traces,
                              'layout': layout,
@@ -81,9 +99,11 @@ class SampleInformation(html.Div):
 
     def _build_lp_hist(self):
         layout = go.Layout(
-            title='Log Posterior'
+            title='Log Posterior',
+            margin=STANDARD_MARGIN,
         )
         return dcc.Graph(id='lp_hist',
+                         style=dict(height=STANDARD_HEIGHT),
                          figure={
                              'data': [go.Histogram(x=self.data_warmup['lp__'])],
                              'layout': layout,
@@ -91,9 +111,11 @@ class SampleInformation(html.Div):
 
     def _build_metro_hist(self):
         layout = go.Layout(
+            margin=STANDARD_MARGIN,
             title='Mean Metrop. Acceptance'
         )
         return dcc.Graph(id='metro_hist',
+                         style=dict(height=STANDARD_HEIGHT),
                          figure={
                              'data': [go.Histogram(x=self.data_warmup['accept_stat__'])],
                              'layout': layout
@@ -105,6 +127,7 @@ class SampleInformation(html.Div):
                               'mode': 'markers',
                               })]
         layout = go.Layout(
+            margin=STANDARD_MARGIN,
             xaxis={
                 'title': 'Mean Metrop. Acceptance',
             },
@@ -113,6 +136,7 @@ class SampleInformation(html.Div):
             },
         )
         return dcc.Graph(id='metro_lp_plot',
+                         style=dict(height=STANDARD_HEIGHT*2),
                          figure={
                              'data': traces,
                              'layout': layout,
