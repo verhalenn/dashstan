@@ -46,9 +46,15 @@ class DashStan(dash.Dash):
 
     def build_layout(self):
         self.app.layout = html.Div(className='container-fluid', children=[
-            html.H1('DashStan'),
-            dcc.Tabs(id='main_tabs', value='Diagnostics', children=[
-                dcc.Tab(label=key, value=key) for key in self._TABS
+            html.Div(className='row', children=[
+                html.Div(className='col-sm-2', children=[
+                    html.H1('DashStan'),
+                ]),
+                html.Div(className='col', children=[
+                    dcc.Tabs(id='main_tabs', value='Diagnostics', children=[
+                        dcc.Tab(label=key, value=key) for key in self._TABS
+                    ]),
+                ]),
             ]),
             html.Div(id='dash-holder'),
         ])
