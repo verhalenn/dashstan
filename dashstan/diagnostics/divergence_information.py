@@ -18,6 +18,9 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
 
+STANDARD_HEIGHT = 300
+STANDARD_MARGIN = dict(l=50, r=20, t=50, b=50, pad=5)
+
 
 class DivergenceInformation(html.Div):
 
@@ -35,8 +38,14 @@ class DivergenceInformation(html.Div):
         divergent_metro_violin = self._build_divergent_metro_violin()
         self.children = [
             divergent_step,
-            divergent_log_violin,
-            divergent_metro_violin,
+            html.Div(className='row', children=[
+                html.Div(className='col', children=[
+                    divergent_log_violin,
+                ]),
+                html.Div(className='col', children=[
+                    divergent_metro_violin,
+                ]),
+            ]),
         ]
 
     def _build_divergent_step(self):
@@ -49,9 +58,11 @@ class DivergenceInformation(html.Div):
                               )
                               }) for chain in self.chains]
         layout = go.Layout(
-            title='Divergent'
+            margin=STANDARD_MARGIN,
+            title='Divergent',
         )
         return dcc.Graph(id='divergent_step',
+                         style=dict(height=STANDARD_HEIGHT),
                          figure={
                              'data': traces,
                              'layout': layout,
@@ -62,11 +73,12 @@ class DivergenceInformation(html.Div):
         traces = [
             {'type': 'violin',
              'x': self.data_warmup['divergent__'][self.data_warmup['divergent__'] == divergent],
-             'y': self.data_warmup['lp__'][self.data_warmup['divergent__'] == divergent],}
+             'y': self.data_warmup['lp__'][self.data_warmup['divergent__'] == divergent], }
             for divergent in self.data_warmup['divergent__'].unique()
         ]
 
         layout = go.Layout(
+            margin=STANDARD_MARGIN,
             xaxis={
                 'title': 'Divergent'
             },
@@ -77,6 +89,7 @@ class DivergenceInformation(html.Div):
         )
 
         return dcc.Graph(id='divergent_log_violin',
+                         style=dict(height=STANDARD_HEIGHT),
                          figure={
                              'data': traces,
                              'layout': layout,
@@ -86,11 +99,12 @@ class DivergenceInformation(html.Div):
         traces = [
             {'type': 'violin',
              'x': self.data_warmup['divergent__'][self.data_warmup['divergent__'] == divergent],
-             'y': self.data_warmup['accept_stat__'][self.data_warmup['divergent__'] == divergent],}
+             'y': self.data_warmup['accept_stat__'][self.data_warmup['divergent__'] == divergent], }
             for divergent in self.data_warmup['divergent__'].unique()
         ]
 
         layout = go.Layout(
+            margin=STANDARD_MARGIN,
             xaxis={
                 'title': 'Divergent'
             },
@@ -100,11 +114,11 @@ class DivergenceInformation(html.Div):
             showlegend=False,
         )
         return dcc.Graph(id='divergent_metro_violin',
+                         style=dict(height=STANDARD_HEIGHT),
                          figure={
                              'data': traces,
                              'layout': layout,
                          })
-
 
     def _get_chains(self):
         chain_data = self.data_warmup
