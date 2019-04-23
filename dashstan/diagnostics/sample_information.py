@@ -44,7 +44,7 @@ class SampleInformation(html.Div):
                     html.Div(className='col', children=[
                         metro_lp_plot,
                     ]),
-                    html.Div(className='col',  style=dict(height=300), children=[
+                    html.Div(className='col',  children=[
                         iter_lp_graph,
                         iter_metro_graph,
                     ]),
