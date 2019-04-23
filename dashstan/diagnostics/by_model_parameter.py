@@ -57,8 +57,8 @@ class ByModelParameter(html.Div):
                     dcc.Graph(id='parameter-metro-plot', style=STANDARD_HEIGHT),
                 ]),
                 html.Div(className='row', children=[
-                    dcc.Graph(id='step-size-violin', style=STANDARD_HEIGHT, config=dict(displayModeBar=False)),
-                    dcc.Graph(id='treedepth-violin', style=STANDARD_HEIGHT, config=dict(displayModeBar=False)),
+                    dcc.Graph(id='step-size-violin', style=STANDARD_HEIGHT),
+                    dcc.Graph(id='treedepth-violin', style=STANDARD_HEIGHT),
                 ]),
             ]),
         ]
