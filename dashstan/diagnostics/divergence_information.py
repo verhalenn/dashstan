@@ -14,6 +14,7 @@
 #      You should have received a copy of the GNU General Public License
 #      along with this program.  If not, see <https://www.gnu.org/licenses/>
 
+from dashstan import dashstantab
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
@@ -22,12 +23,11 @@ STANDARD_HEIGHT = 300
 STANDARD_MARGIN = dict(l=50, r=20, t=50, b=50, pad=5)
 
 
-class DivergenceInformation(html.Div):
+class DivergenceInformation(dashstantab.DashStanTab):
 
-    def __init__(self, app, data, **kwargs):
+    def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.app = app
-        self.data = data
+        self.label = 'Divergence Information'
         self.data_warmup = self.data[self.data['warmup'] == 0]
         self.build_children()
 

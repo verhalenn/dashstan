@@ -32,26 +32,11 @@ class Diagnostics(html.Div):
         self.data = data
         self.app = app
         self._diagnostics_tabs = {
-            'by_model_parameter': {
-                'label': 'By Model Parameter',
-                'page': ByModelParameter(app=self.app, data=self.data)
-            },
-            'sample_information': {
-                'label': 'Sample Information',
-                'page': SampleInformation(app=self.app, data=self.data)
-            },
-            'divergence_information': {
-                'label': 'Divergence Information',
-                'page': DivergenceInformation(app=self.app, data=self.data)
-            },
-            'treedepth_information': {
-                'label': 'Treedepth Information',
-                'page': TreeDepth(app=self.app, data=self.data)
-            },
-            'step_size_informatio': {
-                'label': 'Step size information',
-                'page': StepSizeInformation(app=self.app, data=self.data),
-            },
+            'by_model_parameter': ByModelParameter(app=self.app, data=self.data),
+            'sample_information': SampleInformation(app=self.app, data=self.data),
+            'divergence_information': DivergenceInformation(app=self.app, data=self.data),
+            'treedepth_information': TreeDepth(app=self.app, data=self.data),
+            'step_size_information': StepSizeInformation(app=self.app, data=self.data),
         }
         self.build_children()
         self.build_callbacks()
@@ -62,12 +47,12 @@ class Diagnostics(html.Div):
             [Input(component_id='diagnostics-tabs', component_property='value')]
         )
         def render_diagnostics_tab(value):
-            return self._diagnostics_tabs[value]['page']
+            return self._diagnostics_tabs[value]
 
     def build_children(self):
         self.children = [
             dcc.Tabs(id='diagnostics-tabs', value='by_model_parameter', children=[
-                dcc.Tab(label=self._diagnostics_tabs[key]['label'], value=key) for key in self._diagnostics_tabs
+                dcc.Tab(label=self._diagnostics_tabs[key].get_label(), value=key) for key in self._diagnostics_tabs
             ]),
             html.Div(id='diagnostics-holder'),
         ]

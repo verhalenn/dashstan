@@ -15,6 +15,7 @@
 #      along with this program.  If not, see <https://www.gnu.org/licenses/>
 
 from dash.dependencies import Input, Output
+from dashstan import dashstantab
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
@@ -24,12 +25,11 @@ STANDARD_HEIGHT = dict(height=250)
 STANDARD_MARGIN = dict(l=50, r=20, t=20, b=50, pad=5)
 
 
-class ByModelParameter(html.Div):
+class ByModelParameter(dashstantab.DashStanTab):
 
-    def __init__(self, app, data, **kwargs):
+    def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.app = app
-        self.data = data
+        self.label = 'By Model Parameter'
         self.build_children()
         self.build_callbacks()
 
