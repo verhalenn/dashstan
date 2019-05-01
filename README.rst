@@ -13,13 +13,16 @@ a Stan made No-U-Turn MCMC.
 .. _Pandas: https://pandas.pydata.org/
 
 
-**Screen Shots**
+**Screenshots**
 
 .. image:: images/sample_information.PNG
+    :width: 350pt
 
 .. image:: images/parameters_plot.PNG
+    :width: 350pt
 
 .. image:: images/treedepth_information.PNG
+    :width: 350pt
 
 **Demo**
 
