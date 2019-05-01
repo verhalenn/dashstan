@@ -26,12 +26,12 @@ setup(
     author_email='verhalenn@gmail.com',
     description='Dashboard for Stan MCMC simulations.',
     install_requires=[
-        "dash>=0.39",
-        "dash_core_components>=0.44",
-        "dash_html_components>=0.14",
-        "dash_table>=3.6",
-        "pystan>=1.15",
-        "pandas>=0.24",
-        "plotly>=3.5",
+        "dash>=0.39.0",
+        "dash_core_components>=0.44.0",
+        "dash_html_components>=0.14.0",
+        "dash_table>=3.6.0",
+        "pystan>=2.18.1.0",
+        "pandas>=0.24.1",
+        "plotly>=3.5.0",
     ]
 )
